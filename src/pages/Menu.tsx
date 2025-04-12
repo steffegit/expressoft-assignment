@@ -27,6 +27,19 @@ const Menu = () => {
   const [sortOption, setSortOption] = useState<string>('default')
   const [searchQuery, setSearchQuery] = useState<string>('')
 
+  const toggleAvailability = (productId: string) => {
+    const updatedCategories = categories.map((category) => ({
+      ...category,
+      products: category.products.map((product) =>
+        product.id === productId
+          ? { ...product, available: !product.available }
+          : product
+      )
+    }))
+
+    setCategories(updatedCategories)
+  }
+
   const filteredProducts = categories.flatMap((category) => {
     if (selectedCategory !== 'all' && category.category !== selectedCategory) {
       return []
@@ -56,7 +69,7 @@ const Menu = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="sticky top-0 z-10 bg-white shadow-sm">
+      <header className="sticky top-0 z-20 bg-white shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Button onClick={() => navigate('/')} variant="ghost" size="icon">
@@ -70,7 +83,7 @@ const Menu = () => {
         </div>
       </header>
 
-      <div className="sticky top-16 z-10 bg-white border-b border-gray-200">
+      <div className="sticky top-16 z-20 bg-white border-b border-gray-200">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center gap-3">
             <div className="relative flex-1">
@@ -100,7 +113,7 @@ const Menu = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-4 flex justify-between">
+      <div className="container mx-auto px-4 py-4 flex justify-center w-full">
         <CategoryFilter
           categories={categories}
           selectedCategory={selectedCategory}
@@ -111,7 +124,11 @@ const Menu = () => {
       <div className="container mx-auto px-4 pb-32">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {sortedProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard
+              key={product.id}
+              product={product}
+              onToggleAvailability={toggleAvailability}
+            />
           ))}
         </div>
 
