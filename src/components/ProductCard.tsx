@@ -9,11 +9,13 @@ import { Button } from './ui/button'
 interface ProductCardProps {
   product: Product
   onToggleAvailability: (productId: string) => void
+  onAddToCart: (product: Product) => void
 }
 
 export default function ProductCard({
   product,
-  onToggleAvailability
+  onToggleAvailability,
+  onAddToCart
 }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false)
 
@@ -83,6 +85,7 @@ export default function ProductCard({
       <div className="p-5 pt-0 mt-auto">
         <Button
           variant={product.available ? 'default' : 'secondary'}
+          onClick={() => onAddToCart(product)}
           disabled={!product.available}
           className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-md flex items-center justify-center disabled:opacity-50"
         >
@@ -90,7 +93,6 @@ export default function ProductCard({
           Add to Order
         </Button>
       </div>
-      {/* TODO: Add Cart here */}
     </div>
   )
 }

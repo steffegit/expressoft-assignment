@@ -9,7 +9,7 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
-import { MenuCategory, menuData } from '@/data/menuData'
+import { MenuCategory, menuData, Product } from '@/data/menuData'
 import ProductCard from '@/components/ProductCard'
 import CategoryFilter from '@/components/CategoryFilter'
 import {
@@ -19,6 +19,7 @@ import {
   SelectTrigger
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
+import CartSummary from '@/components/CartSummary'
 
 const Menu = () => {
   const navigate = useNavigate()
@@ -26,6 +27,9 @@ const Menu = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [sortOption, setSortOption] = useState<string>('default')
   const [searchQuery, setSearchQuery] = useState<string>('')
+  const [cartItems, setCartItems] = useState<
+    { product: Product; quantity: number }[]
+  >([])
 
   const toggleAvailability = (productId: string) => {
     const updatedCategories = categories.map((category) => ({
@@ -66,6 +70,43 @@ const Menu = () => {
         return 0
     }
   })
+
+  const addToCart = (product: Product) => {
+    setCartItems((prevItems) => {
+      const existingItem = prevItems.find(
+        (item) => item.product.id === product.id
+      )
+
+      if (existingItem) {
+        return prevItems.map((item) =>
+          item.product.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        )
+      } else {
+        return [...prevItems, { product, quantity: 1 }]
+      }
+    })
+  }
+
+  const removeFromCart = (productId: string) => {
+    setCartItems((prevItems) =>
+      prevItems.filter((item) => item.product.id !== productId)
+    )
+  }
+
+  const updateQuantity = (productId: string, quantity: number) => {
+    if (quantity <= 0) {
+      removeFromCart(productId)
+      return
+    }
+
+    setCartItems((prevItems) =>
+      prevItems.map((item) =>
+        item.product.id === productId ? { ...item, quantity } : item
+      )
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -121,13 +162,14 @@ const Menu = () => {
         />
       </div>
 
-      <div className="container mx-auto px-4 pb-32">
+      <div className="container mx-auto px-4 pb-40">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {sortedProducts.map((product) => (
             <ProductCard
               key={product.id}
               product={product}
               onToggleAvailability={toggleAvailability}
+              onAddToCart={addToCart}
             />
           ))}
         </div>
@@ -138,6 +180,14 @@ const Menu = () => {
           </div>
         )}
       </div>
+
+      {cartItems.length > 0 && (
+        <CartSummary
+          cartItems={cartItems}
+          onUpdateQuantity={updateQuantity}
+          onRemoveItem={removeFromCart}
+        />
+      )}
     </div>
   )
 }
