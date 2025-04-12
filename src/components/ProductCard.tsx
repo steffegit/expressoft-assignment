@@ -4,18 +4,22 @@ import { useState } from 'react'
 import type { Product } from '../data/menuData'
 import { Eye, ShoppingCart } from 'lucide-react'
 import { formatCurrency } from '../lib/utils'
-import { Button } from './ui/button'
+import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label'
+import { Switch } from '@/components/ui/switch'
 
 interface ProductCardProps {
   product: Product
   onToggleAvailability: (productId: string) => void
   onAddToCart: (product: Product) => void
+  onViewDetails: (product: Product) => void
 }
 
 export default function ProductCard({
   product,
   onToggleAvailability,
-  onAddToCart
+  onAddToCart,
+  onViewDetails
 }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false)
 
@@ -47,8 +51,8 @@ export default function ProductCard({
 
         {isHovered && (
           <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-            {/* TODO: Add Modal here */}
             <Button
+              onClick={() => onViewDetails(product)}
               variant="outline"
               className="flex items-center gap-1 bg-white text-gray-800 px-3 py-1 rounded-md text-sm font-medium"
             >
@@ -73,13 +77,16 @@ export default function ProductCard({
       </div>
 
       <div className="mt-auto p-5 border-t border-gray-200">
-        <Button
-          variant="outline"
-          className="w-full flex items-center gap-2 text-sm"
-          onClick={() => onToggleAvailability(product.id)}
-        >
-          {product.available ? 'Mark as Unavailable' : 'Mark as Available'}
-        </Button>
+        <div className="flex items-center">
+          <div className="flex items-center gap-2">
+            <Switch
+              checked={product.available}
+              onCheckedChange={() => onToggleAvailability(product.id)}
+              className="data-[state=checked]:bg-green-500 data-[state=checked]:hover:bg-green-600"
+            />
+            <span className="text-md text-gray-600">Available</span>
+          </div>
+        </div>
       </div>
 
       <div className="p-5 pt-0 mt-auto">

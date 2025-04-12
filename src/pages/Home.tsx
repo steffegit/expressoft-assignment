@@ -38,7 +38,7 @@ const Home = () => {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-amber-50 to-orange-100 flex flex-col items-center justify-center p-6">
+    <main className="min-h-screen bg-gradient-to-b from-amber-50/20 to-orange-100/40 flex flex-col items-center justify-center p-6">
       <Card className="w-full max-w-md bg-white/90 backdrop-blur shadow-xl">
         <CardContent className="p-8">
           <div className="flex flex-col items-center text-center space-y-8">
@@ -81,7 +81,7 @@ const Home = () => {
             </Button>
 
             <p className="text-sm text-gray-500">
-              Browse our menu and add your favorite items to your order
+              Browse our menu and add order your favorite items now!
             </p>
           </div>
         </CardContent>

@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import CartSummary from '@/components/CartSummary'
+import ProductModal from '@/components/ProductModal'
 
 const Menu = () => {
   const navigate = useNavigate()
@@ -30,6 +31,8 @@ const Menu = () => {
   const [cartItems, setCartItems] = useState<
     { product: Product; quantity: number }[]
   >([])
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
+  const [showModal, setShowModal] = useState<boolean>(false)
 
   const toggleAvailability = (productId: string) => {
     const updatedCategories = categories.map((category) => ({
@@ -108,8 +111,18 @@ const Menu = () => {
     )
   }
 
+  const openProductModal = (product: Product) => {
+    setSelectedProduct(product)
+    setShowModal(true)
+  }
+
+  const closeProductModal = () => {
+    setShowModal(false)
+    setSelectedProduct(null)
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-amber-50/10 to-orange-100/10">
       <header className="sticky top-0 z-20 bg-white shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
@@ -122,37 +135,36 @@ const Menu = () => {
             </Button>
           </div>
         </div>
-      </header>
-
-      <div className="sticky top-16 z-20 bg-white border-b border-gray-200">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center gap-3">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <Input
-                type="text"
-                placeholder="Search menu..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9"
-              />
+        <div>
+          <div className="container mx-auto px-4 py-4">
+            <div className="flex items-center gap-3">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                  type="text"
+                  placeholder="Search menu..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-9"
+                />
+              </div>
+              <Select value={sortOption} onValueChange={setSortOption}>
+                <SelectTrigger className="w-auto">
+                  <SlidersHorizontal className="h-4 w-4 mr-2" />
+                  <span className="hidden sm:inline">Sort</span>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="default">Default</SelectItem>
+                  <SelectItem value="price-asc">Price: Low to High</SelectItem>
+                  <SelectItem value="price-desc">Price: High to Low</SelectItem>
+                  <SelectItem value="name-asc">Name: A to Z</SelectItem>
+                  <SelectItem value="name-desc">Name: Z to A</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            <Select value={sortOption} onValueChange={setSortOption}>
-              <SelectTrigger className="w-auto">
-                <SlidersHorizontal className="h-4 w-4 mr-2" />
-                <span className="hidden sm:inline">Sort</span>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="default">Default</SelectItem>
-                <SelectItem value="price-asc">Price: Low to High</SelectItem>
-                <SelectItem value="price-desc">Price: High to Low</SelectItem>
-                <SelectItem value="name-asc">Name: A to Z</SelectItem>
-                <SelectItem value="name-desc">Name: Z to A</SelectItem>
-              </SelectContent>
-            </Select>
           </div>
         </div>
-      </div>
+      </header>
 
       <div className="container mx-auto px-4 py-4 flex justify-center w-full">
         <CategoryFilter
@@ -170,6 +182,7 @@ const Menu = () => {
               product={product}
               onToggleAvailability={toggleAvailability}
               onAddToCart={addToCart}
+              onViewDetails={openProductModal}
             />
           ))}
         </div>
@@ -186,6 +199,15 @@ const Menu = () => {
           cartItems={cartItems}
           onUpdateQuantity={updateQuantity}
           onRemoveItem={removeFromCart}
+        />
+      )}
+
+      {selectedProduct && (
+        <ProductModal
+          product={selectedProduct}
+          isOpen={showModal}
+          onClose={closeProductModal}
+          onAddToCart={addToCart}
         />
       )}
     </div>

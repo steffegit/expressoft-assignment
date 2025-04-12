@@ -13,6 +13,9 @@ This project is a simplified **Digital Menu App** built with **ReactJS**. It's m
 - [Eslint](https://eslint.org)
 - [Prettier](https://prettier.io)
 
+Added by steffe:
+- [shadcn/ui](https://ui.shadcn.com/)
+
 ---
 
 ## 🧾 Dummy Data Structure
@@ -92,8 +95,10 @@ src/
 
 ## ▶️ Getting Started
 
+```bash
 npm install
 npm run dev
+```
 
 ---
 
