@@ -8,7 +8,8 @@ import {
   ChevronRight,
   Clock,
   MapPin,
-  Receipt
+  Receipt,
+  User as UserIcon
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
@@ -32,8 +33,6 @@ export default function OrderSummaryPage() {
   } | null>(null)
 
   useEffect(() => {
-    // This function will only run once when the component mounts
-    // or when searchParams changes
     const initializeOrder = () => {
       const orderParamData = searchParams.get('items')
 
@@ -48,20 +47,17 @@ export default function OrderSummaryPage() {
           decodeURIComponent(orderParamData)
         )
 
-        // Find products from menu data
         const items: OrderItem[] = []
         let total = 0
         let prepTime = 15 // Base preparation time in minutes
 
         parsedItems.forEach((item) => {
-          // Find the product in menu data
           for (const category of menuData) {
             const product = category.products.find((p) => p.id === item.id)
             if (product) {
               items.push({ product, quantity: item.qty })
               total += product.price * item.qty
 
-              // Add time based on quantity and product type
               if (category.category === 'Pizza') {
                 prepTime += 5 * item.qty
               } else {
@@ -77,7 +73,7 @@ export default function OrderSummaryPage() {
           id: generateOrderId(),
           items: items,
           total: total,
-          estimatedTime: Math.min(prepTime, 45) // Cap at 45 minutes
+          estimatedTime: Math.min(prepTime, 45)
         })
       } catch (error) {
         console.error('Failed to parse order data:', error)
@@ -108,7 +104,6 @@ export default function OrderSummaryPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <header className="sticky top-0 z-10 bg-white shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
@@ -121,13 +116,14 @@ export default function OrderSummaryPage() {
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <h1 className="text-xl font-bold text-orange-800">Order Summary</h1>
-            <div className="w-8"></div> {/* Spacer for alignment */}
+            <Button variant="ghost" size="icon">
+              <UserIcon />
+            </Button>
           </div>
         </div>
       </header>
 
       <div className="container mx-auto px-4 py-8 max-w-2xl flex flex-col gap-4">
-        {/* Order Confirmation */}
         <Card className="border-green-500 bg-green-50">
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
@@ -146,7 +142,6 @@ export default function OrderSummaryPage() {
           </CardContent>
         </Card>
 
-        {/* Order Details */}
         <Card>
           <CardHeader className="pb-2">
             <div className="flex justify-between items-center">
@@ -155,7 +150,6 @@ export default function OrderSummaryPage() {
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
-            {/* Order Status */}
             <div className="flex items-center gap-2 text-sm text-orange-600">
               <Clock className="h-4 w-4" />
               <span>
@@ -163,7 +157,6 @@ export default function OrderSummaryPage() {
               </span>
             </div>
 
-            {/* Delivery Address */}
             <div className="flex items-start gap-2 text-sm">
               <MapPin className="h-4 w-4 mt-0.5 text-gray-500" />
               <div>
@@ -174,7 +167,6 @@ export default function OrderSummaryPage() {
 
             <Separator />
 
-            {/* Order Items */}
             <div className="space-y-4">
               <h3 className="font-medium">Items</h3>
               <div className="space-y-3">
@@ -212,7 +204,6 @@ export default function OrderSummaryPage() {
 
             <Separator />
 
-            {/* Order Summary */}
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span>Subtotal</span>
@@ -230,7 +221,6 @@ export default function OrderSummaryPage() {
           </CardContent>
         </Card>
 
-        {/* Payment Info */}
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
@@ -246,7 +236,6 @@ export default function OrderSummaryPage() {
           </CardContent>
         </Card>
 
-        {/* Actions */}
         <div className="flex flex-col gap-3">
           <Button
             onClick={() => navigate('/menu')}
