@@ -32,7 +32,11 @@ const Menu = () => {
       return []
     }
 
-    return category.products
+    return category.products.filter(
+      (product) =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchQuery.toLowerCase())
+    )
   })
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
