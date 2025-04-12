@@ -75,7 +75,7 @@ const Menu = () => {
             <Button onClick={() => navigate('/')} variant="ghost" size="icon">
               <ArrowLeft />
             </Button>
-            <h1 className="text-xl font-bold text-purple-800">Menu</h1>
+            <h1 className="text-xl font-bold text-orange-800">Menu</h1>
             <Button variant="ghost" size="icon">
               <UserIcon />
             </Button>

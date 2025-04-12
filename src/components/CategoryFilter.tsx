@@ -34,7 +34,7 @@ export default function CategoryFilter({
           onClick={() => onSelectCategory('all')}
           className={`px-5 py-2 rounded-full ${
             selectedCategory === 'all'
-              ? 'bg-purple-500 text-white font-semibold'
+              ? 'bg-orange-500 text-white font-semibold'
               : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
           }`}
         >
@@ -50,7 +50,7 @@ export default function CategoryFilter({
             onClick={() => onSelectCategory(category.category)}
             className={`px-5 py-2 rounded-full ${
               selectedCategory === category.category
-                ? 'bg-purple-500 text-white font-semibold'
+                ? 'bg-orange-500 text-white font-semibold'
                 : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
             }`}
           >

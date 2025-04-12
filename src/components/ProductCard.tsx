@@ -60,7 +60,7 @@ export default function ProductCard({
       <div className="p-5 flex-grow">
         <div className="flex justify-between items-start gap-2">
           <h3 className="font-semibold text-lg">{product.name}</h3>
-          <div className="text-lg font-bold text-purple-600 whitespace-nowrap">
+          <div className="text-lg font-bold text-orange-600 whitespace-nowrap">
             {formatCurrency(product.price)}
           </div>
         </div>
@@ -84,7 +84,7 @@ export default function ProductCard({
         <Button
           variant={product.available ? 'default' : 'secondary'}
           disabled={!product.available}
-          className="w-full bg-purple-500 hover:bg-purple-600 text-white py-2 rounded-md flex items-center justify-center disabled:opacity-50"
+          className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-md flex items-center justify-center disabled:opacity-50"
         >
           <ShoppingCart className="h-4 w-4 mr-2" />
           Add to Order
