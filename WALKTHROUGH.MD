@@ -1,1 +1,1 @@
-- I have started with the Home (although optional)
+- I have started with the welcoming page (also I have added the language chooser)

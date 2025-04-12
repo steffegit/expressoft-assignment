@@ -15,9 +15,19 @@ import {
 
 import RestaurantLogo from '@/assets/logo.svg'
 
+interface LanguageOption {
+  value: string
+  label: string
+}
+const languageOptions: LanguageOption[] = [
+  { value: 'en', label: 'English' },
+  { value: 'es', label: 'Español' },
+  { value: 'fr', label: 'Français' }
+]
+
 const Home = () => {
   const navigation = useNavigate()
-  const [language, setLanguage] = useState('en')
+  const [language, setLanguage] = useState(languageOptions[0].value)
 
   const handleLanguageChange = (value: string) => {
     setLanguage(value)
@@ -32,7 +42,7 @@ const Home = () => {
       <Card className="w-full max-w-md bg-white/90 backdrop-blur shadow-xl">
         <CardContent className="p-8">
           <div className="flex flex-col items-center text-center space-y-8">
-            <div className="rounded-full bg-purple-200 p-5 border-2 border-purple-300">
+            <div className="rounded-full bg-purple-100 p-5 border-2 border-purple-200">
               <img
                 src={RestaurantLogo}
                 alt="Restaurant Logo"
@@ -54,9 +64,11 @@ const Home = () => {
                   <SelectValue placeholder="Select Language" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="en">English</SelectItem>
-                  <SelectItem value="es">Español</SelectItem>
-                  <SelectItem value="fr">Français</SelectItem>
+                  {languageOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
